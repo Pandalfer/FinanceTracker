@@ -1,0 +1,16 @@
+{% block body%}
+<link rel="stylesheet" href="{{url_for('static', filename='styles.css')}}">
+<h1 style="color: red;">{{error}}</h1>
+<br>
+<div class="container">
+  <h1>Welcome</h1>
+  <form id="questions-form" action="{{url_for('questions')}}" method="post">
+    <label for="monthly_income">What is your monthly income?</label><br>
+    <input type="text" id="monthly_income" name="monthly_income" placeholder="0.00" class="input-field"/><br><br>
+    <label for="monthly_savings">What are your monthly Savings?</label><br>
+    <input type="text" id="monthly_savings" name="monthly_savings" placeholder="0.00" class="input-field"/><br>
+    <input type="submit" value="Submit" class="btn btn-login"/>
+  </form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,308 @@
+// Variables
+@import url('https://fonts.googleapis.com/css2?family=Baloo+Paaji+2:wght@400..800&family=Dosis:wght@200..800&display=swap');
+
+$primary-colour: #007bff;
+$primary-hover-colour: #0056b3;
+$secondary-colour: #28a745;
+$secondary-hover-colour: #218835;
+$background-colour: wheat;
+$container-bg-colour: #ffffff;
+$text-colour: #333;
+$subtext-colour: #666;
+$add-row-button-text-colour: #0091ff;
+@import url("https://fonts.googleapis.com/css2?family=Baloo+Paaji+2:wght@400..800&display=swap");
+
+// Dark Mode Variables
+$dark-background-colour: #0b0c15;
+$dark-container-bg-colour: #141620;
+$dark-text-colour: #ffffff;
+$dark-subtext-colour: #bbb;
+// Styling
+
+body{
+  background-color: $background-colour;
+  font-family: "Dosis", "Baloo Paaji 2", sans-serif;
+  color: $text-colour;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  margin: 0;
+  text-align: center;
+}
+
+header{
+  width: 100%;
+  background-color: $container-bg-colour;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  padding: 20px 0;
+  position: fixed;
+  h1{
+    margin: 0;
+    font-size: 2.5rem;
+    color: $text-colour;
+
+  }
+
+}
+
+.table {
+  border-collapse: collapse;
+  border: 0;
+  width: 100%;
+
+  th, td {
+    border: 0;
+    padding: 5px;
+    text-align: left;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    transition: all 0.3s ease-in-out;
+    background-color: $container-bg-colour;
+  }
+
+  tr {
+    transition: all 0.3s ease-in-out;
+    position: relative;
+  }
+
+  /* Hover Effect: Slight pop-out */
+  tr:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    background-color: lighten($container-bg-colour, 5%);
+  }
+
+  /* When row is expanded, make it larger */
+  tr.expanded {
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Menu button */
+  .menu-btn {
+    cursor: pointer;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    color: $container-bg-colour;
+    transition: color 0.3s ease-in-out;
+  }
+
+  /* Change menu button color when row is hovered */
+  tr:hover .menu-btn {
+    color: $text-colour;
+  }
+
+  /* Delete button (hidden by default) */
+  .delete-btn {
+    display: none;
+    cursor: pointer;
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+
+  /* When row is expanded, show delete button */
+  tr.expanded .delete-btn {
+    display: inline-block;
+  }
+
+  /* Hide menu button when row is expanded */
+  tr.expanded .menu-btn {
+    display: none;
+  }
+}
+
+
+
+
+
+
+
+main{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  width: 100%;
+}
+
+.container{
+  background-color: $container-bg-colour;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  padding: 30px;
+  max-width: 400px;
+  width: 100%;
+  margin: 50px auto;
+
+
+  h1{
+    font-size: 2.5rem;
+    color: $text-colour;
+    margin-bottom: 1.5rem;
+  }
+
+  p {
+    font-size: 18px;
+    color: $subtext-colour;
+    margin-bottom: 20px;
+  }
+
+  .input-field{
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #333;
+    border-radius: 4px;
+    font-size: 1.5rem;
+    box-sizing: border-box;
+
+    &:focus{
+      outline: none;
+      border-color: $primary-colour;
+    }
+  }
+
+  .btn{
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: $background-colour 0.3s ease;
+
+    &.btn-login{
+      background-color: $primary-colour;
+      color: #fff;
+
+      &:hover{
+        background-color: $primary-hover-colour;
+      }
+    }
+    &.btn-register{
+      background-color: $secondary-colour;
+      color: #fff;
+
+      &:hover{
+        background-color: $secondary-hover-colour;
+      }
+    }
+
+    &.btn-logout{
+      background-color: $primary-colour;
+      color: #fff;
+
+      &:hover{
+        background-color: $primary-hover-colour;
+      }
+    }
+
+    &.btn-add-row{
+      color: $add-row-button-text-colour;
+      background-color: transparent;
+
+
+      &:hover{
+        color: #303aff;
+      }
+    }
+  }
+}
+
+.modal-container{
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  position: fixed;
+  pointer-events: none;
+  opacity: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  .modal{
+    background-color: white;
+    border-radius: 5px;
+    padding: 30px 50px;
+    width: 600px;
+    max-width: 100%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    position: relative;
+
+    h1{
+      margin: 0;
+    }
+    .input-field{
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #333;
+      border-radius: 4px;
+      font-size: 1.5rem;
+      box-sizing: border-box;
+
+      &:focus{
+        outline: none;
+        border-color: $primary-colour;
+      }
+    }
+
+    p{
+      font-size: 14px;
+      opacity: 0.7;
+    }
+
+    .btn{
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: $background-colour 0.3s ease;
+
+      &.btn-submit-modal{
+        background-color: $primary-colour;
+        color: #fff;
+
+        &:hover{
+          background-color: $primary-hover-colour;
+        }
+      }
+    }
+
+    .close-modal{
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: #333;
+      transition: color 0.3s ease;
+
+      &:hover{
+          color: red;
+      }
+    }
+  }
+}
+
+.modal-container.show{
+  pointer-events: all;
+  opacity: 1;
+}

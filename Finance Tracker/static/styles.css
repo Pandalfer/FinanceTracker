@@ -1,0 +1,251 @@
+@import url("https://fonts.googleapis.com/css2?family=Baloo+Paaji+2:wght@400..800&family=Dosis:wght@200..800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Baloo+Paaji+2:wght@400..800&display=swap");
+body {
+  background-color: wheat;
+  font-family: "Dosis", "Baloo Paaji 2", sans-serif;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  margin: 0;
+  text-align: center;
+}
+
+header {
+  width: 100%;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px 0;
+  position: fixed;
+}
+header h1 {
+  margin: 0;
+  font-size: 2.5rem;
+  color: #333;
+}
+
+.table {
+  border-collapse: collapse;
+  border: 0;
+  width: 100%;
+  /* Hover Effect: Slight pop-out */
+  /* When row is expanded, make it larger */
+  /* Menu button */
+  /* Change menu button color when row is hovered */
+  /* Delete button (hidden by default) */
+  /* When row is expanded, show delete button */
+  /* Hide menu button when row is expanded */
+}
+.table th, .table td {
+  border: 0;
+  padding: 5px;
+  text-align: left;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  transition: all 0.3s ease-in-out;
+  background-color: #ffffff;
+}
+.table tr {
+  transition: all 0.3s ease-in-out;
+  position: relative;
+}
+.table tr:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  background-color: white;
+}
+.table tr.expanded {
+  transform: scale(1.05);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+.table .menu-btn {
+  cursor: pointer;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  color: #ffffff;
+  transition: color 0.3s ease-in-out;
+}
+.table tr:hover .menu-btn {
+  color: #333;
+}
+.table .delete-btn {
+  display: none;
+  cursor: pointer;
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 14px;
+}
+.table tr.expanded .delete-btn {
+  display: inline-block;
+}
+.table tr.expanded .menu-btn {
+  display: none;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  width: 100%;
+}
+
+.container {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  max-width: 400px;
+  width: 100%;
+  margin: 50px auto;
+}
+.container h1 {
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 1.5rem;
+}
+.container p {
+  font-size: 18px;
+  color: #666;
+  margin-bottom: 20px;
+}
+.container .input-field {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #333;
+  border-radius: 4px;
+  font-size: 1.5rem;
+  box-sizing: border-box;
+}
+.container .input-field:focus {
+  outline: none;
+  border-color: #007bff;
+}
+.container .btn {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: wheat 0.3s ease;
+}
+.container .btn.btn-login {
+  background-color: #007bff;
+  color: #fff;
+}
+.container .btn.btn-login:hover {
+  background-color: #0056b3;
+}
+.container .btn.btn-register {
+  background-color: #28a745;
+  color: #fff;
+}
+.container .btn.btn-register:hover {
+  background-color: #218835;
+}
+.container .btn.btn-logout {
+  background-color: #007bff;
+  color: #fff;
+}
+.container .btn.btn-logout:hover {
+  background-color: #0056b3;
+}
+.container .btn.btn-add-row {
+  color: #0091ff;
+  background-color: transparent;
+}
+.container .btn.btn-add-row:hover {
+  color: #303aff;
+}
+
+.modal-container {
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  position: fixed;
+  pointer-events: none;
+  opacity: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.modal-container .modal {
+  background-color: white;
+  border-radius: 5px;
+  padding: 30px 50px;
+  width: 600px;
+  max-width: 100%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+.modal-container .modal h1 {
+  margin: 0;
+}
+.modal-container .modal .input-field {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #333;
+  border-radius: 4px;
+  font-size: 1.5rem;
+  box-sizing: border-box;
+}
+.modal-container .modal .input-field:focus {
+  outline: none;
+  border-color: #007bff;
+}
+.modal-container .modal p {
+  font-size: 14px;
+  opacity: 0.7;
+}
+.modal-container .modal .btn {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: wheat 0.3s ease;
+}
+.modal-container .modal .btn.btn-submit-modal {
+  background-color: #007bff;
+  color: #fff;
+}
+.modal-container .modal .btn.btn-submit-modal:hover {
+  background-color: #0056b3;
+}
+.modal-container .modal .close-modal {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #333;
+  transition: color 0.3s ease;
+}
+.modal-container .modal .close-modal:hover {
+  color: red;
+}
+
+.modal-container.show {
+  pointer-events: all;
+  opacity: 1;
+}
+
+/*# sourceMappingURL=styles.css.map */

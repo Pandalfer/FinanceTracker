@@ -1,0 +1,252 @@
+{% extends "base.html" %}
+
+{% block body%}
+<br>
+<br>
+
+<div class="container">
+  <h1>Welcome, {{username}}!</h1>
+
+  <a href="{{url_for('logout')}}" class="btn btn-logout">Logout</a>
+
+</div>
+<div class="container">
+  <h1>Income</h1>
+
+  <table border="1" class="table" id="income-table">
+    <tr>
+      <th></th>
+      <th class="category">Category</th>
+      <th class="amount">Amount</th>
+      <th class="date">Date Added</th>
+
+
+    </tr>
+    {% for income in income if income.user_id == user.id%}
+    <tr data-id="{{ income.id }}">
+      <td class="menu">
+        <span class="menu-btn">⋮⋮</span> <!-- Menu dots -->
+      </td>
+      <td class="category">{{ income.category}}</td>
+      <td class="amount">{{ income.amount | scientific}}</td>
+      <td class="date">{{ income.date.strftime('%d/%m/%y')}}</td>
+
+    </tr>
+    {% endfor %}
+  </table>
+  <button class="btn btn-add-row" id="open-income">Add Income</button>
+</div>
+
+
+
+<div class="container">
+  <h1>Savings</h1>
+
+  <table border="1" class="table" id="saving-table">
+    <tr>
+      <th></th>
+      <th class="category">Category</th>
+      <th class="amount">Amount</th>
+      <th class="date">Date Added</th>
+    </tr>
+    {% for saving in savings if saving.user_id == user.id%}
+    <tr data-id="{{ saving.id }}">
+    <td class="menu">
+        <span class="menu-btn">⋮⋮</span> <!-- Menu dots -->
+      </td>
+      <td class="category">{{ saving.category}}</td>
+      <td class="amount">{{ saving.amount}}</td>
+      <td class="date">{{ saving.date.strftime('%d/%m/%y')}}</td>
+
+    </tr>
+    {% endfor %}
+  </table>
+  <button class="btn btn-add-row" id="open-saving">Add Saving</button>
+</div>
+
+<div class="container">
+  <h1>Expenses</h1>
+
+  <table border="1" class="table" id="expense-table">
+    <tr>
+      <th></th>
+      <th class="category">Category</th>
+      <th class="amount">Amount</th>
+      <th class="date">Date Added</th>
+    </tr>
+    {% for expense in expenses if expense.user_id == user.id%}
+    <tr data-id="{{ expense.id }}">
+      <td class="menu">
+        <span class="menu-btn">⋮⋮</span> <!-- Menu dots -->
+      </td>
+      <td class="category">{{ expense.category}}</td>
+      <td class="amount">{{ expense.amount}}</td>
+      <td class="date">{{ expense.date.strftime('%d/%m/%y')}}</td>
+
+    </tr>
+    {% endfor %}
+  </table>
+  <button class="btn btn-add-row" id="open-expense">Add Expense</button>
+</div>
+
+<div class="modal-container" id="modal-container-income">
+  <div class="modal">
+    <button class="close-modal" id="close-income">&times;</button>
+    <br>
+    <label for="new_income">What would you like to name this income stream as?</label><br>
+    <input type="text" id="new_income" name="new_income" placeholder="name  " class="input-field"/><br><br>
+    <label for="new_income_name">How much are you earning monthly from stream?</label><br>
+    <input type="text" id="new_income_name" name="new_income_name" placeholder="0.00" class="input-field"/><br><br>
+
+    <input type="submit" value="Submit" id="submit-income" class="btn btn-submit-modal"/>
+  </div>
+</div>
+<div class="modal-container" id="modal-container-saving">
+  <div class="modal">
+    <button class="close-modal" id="close-saving">&times;</button>
+    <br>
+    <label for="new_saving">What would you like to name this saving as?</label><br>
+    <input type="text" id="new_saving" name="new_saving" placeholder="name" class="input-field"/><br><br>
+    <label for="new_saving_name">How much are you saving monthly towards this stream?</label><br>
+    <input type="text" id="new_saving_name" name="new_saving_name" placeholder="0.00" class="input-field"/><br><br>
+
+    <input type="submit" value="Submit" id="submit-saving" class="btn btn-submit-modal"/>
+  </div>
+</div>
+<div class="modal-container" id="modal-container-expense">
+  <div class="modal">
+    <button class="close-modal" id="close-expense">&times;</button>
+    <br>
+    <label for="new_expense">What would you like to name this expense as?</label><br>
+    <input type="text" id="new_expense" name="new_expense" placeholder="name" class="input-field"/><br><br>
+    <label for="new_expense_name">How much are you spending monthly towards stream?</label><br>
+    <input type="text" id="new_expense_name" name="new_expense_name" placeholder="0.00" class="input-field"/><br><br>
+
+    <input type="submit" value="Submit" id="submit-expense" class="btn btn-submit-modal"/>
+  </div>
+</div>
+<script>
+  // Utility function for fetching and handling responses
+  async function fetchData(url, method = "GET", body = null) {
+    try {
+      const options = { method, headers: { "Content-Type": "application/json" } };
+      if (body) options.body = JSON.stringify(body);
+
+      const response = await fetch(url, options);
+      const data = await response.json();
+
+      if (!data.success) throw new Error(data.message);
+      return data;
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Error: " + error.message);
+    }
+  }
+
+  // Handles table row expansion and deletion
+  function setupTableActions(tableId, deleteUrl) {
+    const table = document.getElementById(tableId);
+
+    table.addEventListener("click", function (event) {
+      const target = event.target;
+
+      if (target.classList.contains("menu-btn")) {
+        const row = target.closest("tr");
+
+        if (row.classList.contains("expanded")) return;
+
+        document.querySelectorAll(".expanded").forEach(expRow => {
+          expRow.classList.remove("expanded");
+          expRow.querySelector(".delete-btn")?.remove();
+          expRow.querySelector(".menu-btn").style.display = "flex";
+        });
+
+        row.classList.add("expanded");
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.innerText = "🗑️";
+        deleteBtn.classList.add("delete-btn");
+
+        deleteBtn.onclick = async function () {
+          const itemId = row.getAttribute("data-id");
+          const result = await fetchData(`${deleteUrl}/${itemId}`, "DELETE");
+
+          if (result) row.remove();
+        };
+
+        row.cells[0].appendChild(deleteBtn);
+        target.style.display = "none";
+      }
+    });
+
+    // Close expanded row when clicking outside
+    document.addEventListener("click", function (event) {
+      if (!event.target.closest("tr")) {
+        document.querySelectorAll(".expanded").forEach(row => {
+          row.classList.remove("expanded");
+          row.querySelector(".delete-btn")?.remove();
+          row.querySelector(".menu-btn").style.display = "flex";
+        });
+      }
+    });
+
+    // Close expanded row when pressing Escape
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") {
+        document.querySelectorAll(".expanded").forEach(row => {
+          row.classList.remove("expanded");
+          row.querySelector(".delete-btn")?.remove();
+          row.querySelector(".menu-btn").style.display = "flex";
+        });
+      }
+    });
+  }
+
+  // Setup actions for savings and income tables
+  setupTableActions("saving-table", "/delete_saving");
+  setupTableActions("income-table", "/delete_income");
+  setupTableActions("expense-table", "/delete_expense");
+
+  // General modal setup function
+  function setupModal(openButtonSelector, modalId, closeButtonId, submitButtonId, submitCallback) {
+    const modal = document.getElementById(modalId);
+    const openButtons = document.querySelectorAll(openButtonSelector);
+    const closeButton = document.getElementById(closeButtonId);
+    const submitButton = document.getElementById(submitButtonId);
+
+    openButtons.forEach(button => button.addEventListener("click", () => modal.classList.add("show")));
+    closeButton.addEventListener("click", () => modal.classList.remove("show"));
+    modal.addEventListener("click", event => {
+      if (event.target === modal) modal.classList.remove("show");
+    });
+    submitButton.addEventListener("click", submitCallback);
+  }
+
+  // Generic function for handling form submissions
+  async function handleSubmission(endpoint, categoryInputId, amountInputId) {
+    const category = document.getElementById(categoryInputId).value.trim();
+    const amount = document.getElementById(amountInputId).value.trim();
+
+    if (!category) return alert("Please enter a category!");
+    if (!amount || isNaN(amount)) return alert("Please enter a valid amount!");
+
+    const result = await fetchData(endpoint, "POST", { category, amount: parseFloat(amount) });
+    if (result) location.reload();
+  }
+
+  // Setup modals
+  setupModal("#open-income", "modal-container-income", "close-income", "submit-income", () =>
+    handleSubmission("/add_income", "new_income", "new_income_name")
+  );
+
+  setupModal("#open-saving", "modal-container-saving", "close-saving", "submit-saving", () =>
+    handleSubmission("/add_saving", "new_saving", "new_saving_name")
+  );
+
+  setupModal("#open-expense", "modal-container-expense", "close-expense", "submit-expense", () =>
+    handleSubmission("/add_expense", "new_expense", "new_expense_name")
+  );
+
+
+</script>
+{% endblock %}
